@@ -18,7 +18,7 @@ class OptionApp:
 
         # Move the calculator type selection to the main area
         self.calculator_type = st.radio(
-            "Selecione o Método de Precificação:",
+            "Selecione o método de cálculo:",
             ["Européia (BSM)",
              "Opção Asiática (Aritmética)",
              "Opção Asiática (Geométrica)",
@@ -421,9 +421,9 @@ class OptionApp:
             price = self.price_european_bs(option_style.lower())
             st.write(f"Valor da Opção Black-Scholes: R${price:.2f}")
 
-            if self.show_viz:
-                st.subheader("Visualizações")
-                self.plot_price_sensitivity()
+            # if self.show_viz:
+            #     st.subheader("Visualizações")
+            #     self.plot_price_sensitivity()
 
         elif self.calculator_type == "Opção Asiática (Aritmética)":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
@@ -431,18 +431,18 @@ class OptionApp:
             price = self.price_arithmetic_asian(option_style.lower(), num_sims)
             st.write(f"Valor da Opção Asiática Aritmética: R${price:.2f}")
 
-            if self.show_viz:
-                st.subheader("Simulações Monte Carlo")
-                self.plot_asian_paths(geometric=False)
+            # if self.show_viz:
+            #     st.subheader("Simulações Monte Carlo")
+            #     self.plot_asian_paths(geometric=False)
 
         elif self.calculator_type == "Opção Asiática (Geométrica)":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
             price = self.price_geometric_asian(option_style.lower())
             st.write(f"Valor da Opção Asiática Geométrica: R${price:.2f}")
 
-            if self.show_viz:
-                st.subheader("Análise do Preço da Opção")
-                self.plot_geometric_sensitivity()  # Novo método para sensibilidade específica da asiática geométrica
+            # if self.show_viz:
+            #     st.subheader("Análise do Preço da Opção")
+            #     self.plot_geometric_sensitivity()  # Novo método para sensibilidade específica da asiática geométrica
 
         elif self.calculator_type == "Européia/Americana (Árvore)":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
@@ -451,14 +451,14 @@ class OptionApp:
             price = self.price_tree(option_style.lower(), exercise_type, steps)
             st.write(f"Valor da Opção (Método da Árvore): R${price:.2f}")
 
-            if self.show_viz:
-                st.subheader("Visualizações")
-                self.plot_price_sensitivity()
-                if steps <= 5:  # Só mostra o diagrama da árvore para poucos passos
-                    self.plot_tree_diagram(steps)
-                else:
-                    if st.button("Mostrar Diagrama Simplificado da Árvore (5 passos)"):
-                        self.plot_tree_diagram(5)
+            # if self.show_viz:
+            #     st.subheader("Visualizações")
+            #     self.plot_price_sensitivity()
+            #     if steps <= 5:  # Só mostra o diagrama da árvore para poucos passos
+            #         self.plot_tree_diagram(steps)
+            #     else:
+            #         if st.button("Mostrar Diagrama Simplificado da Árvore (5 passos)"):
+            #             self.plot_tree_diagram(5)
 
         elif self.calculator_type == "Volatilidade Implícita":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
@@ -470,9 +470,9 @@ class OptionApp:
             else:
                 st.write(f"Volatilidade Implícita: {impl_vol*100:.2f}%")
 
-            if self.show_viz:
-                st.subheader("Análise de Convergência")
-                self.plot_implied_vol_convergence(market_price, option_style.lower())
+            # if self.show_viz:
+            #     st.subheader("Análise de Convergência")
+            #     self.plot_implied_vol_convergence(market_price, option_style.lower())
 
 if __name__ == "__main__":
     calculator = OptionApp()
