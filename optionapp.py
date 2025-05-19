@@ -9,7 +9,7 @@ import pandas as pd
 
 class OptionApp:
     def __init__(self):
-        self.calculator_type = "Européia (BSM)"
+        self.calculator_type = "Europeia (BSM)"
         self.setup_interface()
 
     def setup_interface(self):
@@ -19,10 +19,10 @@ class OptionApp:
         # Move the calculator type selection to the main area
         self.calculator_type = st.radio(
             "Selecione o método de cálculo:",
-            ["Européia (BSM)",
+            ["Europeia (BSM)",
              "Opção Asiática (Aritmética)",
              "Opção Asiática (Geométrica)",
-             "Européia/Americana (Árvore)",
+             "Europeia/Americana (Árvore)",
              "Volatilidade Implícita"]
         )
 
@@ -99,7 +99,7 @@ class OptionApp:
             )
         return price
 
-    def price_tree(self, option_style='call', exercise_type='Européia', num_steps=100):
+    def price_tree(self, option_style='call', exercise_type='Europeia', num_steps=100):
         """Calcula o preço usando árvore binomial"""
         dt = self.expiry / num_steps
         u = np.exp(self.volatility * np.sqrt(dt))
@@ -416,7 +416,7 @@ class OptionApp:
     #     st.plotly_chart(fig)
 
     def run(self):
-        if self.calculator_type == "Européia (BSM)":
+        if self.calculator_type == "Europeia (BSM)":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
             price = self.price_european_bs(option_style.lower())
             st.write(f"Valor da Opção Black-Scholes: R${price:.2f}")
@@ -444,9 +444,9 @@ class OptionApp:
             #     st.subheader("Análise do Preço da Opção")
             #     self.plot_geometric_sensitivity()  # Novo método para sensibilidade específica da asiática geométrica
 
-        elif self.calculator_type == "Européia/Americana (Árvore)":
+        elif self.calculator_type == "Europeia/Americana (Árvore)":
             option_style = st.selectbox("Tipo de Opção", ["Call", "Put"])
-            exercise_type = st.selectbox("Estilo de Exercício", ["Européia", "Americana"])
+            exercise_type = st.selectbox("Estilo de Exercício", ["Europeia", "Americana"])
             steps = st.number_input("Número de Passos", min_value=10, value=100)
             price = self.price_tree(option_style.lower(), exercise_type, steps)
             st.write(f"Valor da Opção (Método da Árvore): R${price:.2f}")
