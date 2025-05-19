@@ -14,13 +14,12 @@ class OptionApp:
 
     def setup_interface(self):
         st.title("Calculadora de Opções e Volatilidade Implícita")
-        st.subheader("Enzo Moreira, Gustavo Liang, Gabriel Fedele, Andre Aoki")
+        st.subheader("Daniel Cesar, Enzo Bassit, Emily Yoshida, Gustavo Liang")
 
         # Move the calculator type selection to the main area
         self.calculator_type = st.radio(
             "Selecione o Método de Precificação:",
             ["Européia (BSM)",
-             "Opção Binária (Monte Carlo)",
              "Opção Asiática (Aritmética)",
              "Opção Asiática (Geométrica)",
              "Européia/Americana (Árvore)",
