@@ -37,7 +37,7 @@ class OptionApp:
             self.expiry = st.number_input("Tempo até o Vencimento (anos)", min_value=0.0, value=1.0, step=1.0)
 
             # Adiciona opção para mostrar visualizações
-            self.show_viz = st.checkbox("Mostrar Visualizações", value=True)
+            # self.show_viz = st.checkbox("Mostrar Visualizações", value=True)
 
     def price_european_bs(self, option_style='call'):
         """Calcula o preço de uma opção europeia usando Black-Scholes"""
@@ -167,253 +167,253 @@ class OptionApp:
 
         return sigma
 
-    def plot_price_sensitivity(self):
-        """Plota a sensibilidade do preço"""
-        prices = np.linspace(self.underlying_price * 0.5, self.underlying_price * 1.5, 100)
-        call_prices = []
-        put_prices = []
-        orig_price = self.underlying_price
+    # def plot_price_sensitivity(self):
+    #     """Plota a sensibilidade do preço"""
+    #     prices = np.linspace(self.underlying_price * 0.5, self.underlying_price * 1.5, 100)
+    #     call_prices = []
+    #     put_prices = []
+    #     orig_price = self.underlying_price
 
-        for price in prices:
-            self.underlying_price = price
-            call_prices.append(self.price_european_bs('call'))
-            put_prices.append(self.price_european_bs('put'))
+    #     for price in prices:
+    #         self.underlying_price = price
+    #         call_prices.append(self.price_european_bs('call'))
+    #         put_prices.append(self.price_european_bs('put'))
 
-        self.underlying_price = orig_price
+    #     self.underlying_price = orig_price
 
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=prices, y=call_prices, name="Call Option"))
-        fig.add_trace(go.Scatter(x=prices, y=put_prices, name="Put Option"))
+    #     fig = go.Figure()
+    #     fig.add_trace(go.Scatter(x=prices, y=call_prices, name="Call Option"))
+    #     fig.add_trace(go.Scatter(x=prices, y=put_prices, name="Put Option"))
 
-        fig.update_layout(
-            title="Sensibilidade do Preço da Opção ao Preço do Ativo",
-            xaxis_title="Preço do Ativo",
-            yaxis_title="Preço da Opção",
-            height=500
-        )
+    #     fig.update_layout(
+    #         title="Sensibilidade do Preço da Opção ao Preço do Ativo",
+    #         xaxis_title="Preço do Ativo",
+    #         yaxis_title="Preço da Opção",
+    #         height=500
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
-    def plot_geometric_sensitivity(self):
-        """Plota a sensibilidade do preço para opção asiática geométrica"""
-        prices = np.linspace(self.underlying_price * 0.5, self.underlying_price * 1.5, 100)
-        call_prices = []
-        put_prices = []
-        orig_price = self.underlying_price
+    # def plot_geometric_sensitivity(self):
+    #     """Plota a sensibilidade do preço para opção asiática geométrica"""
+    #     prices = np.linspace(self.underlying_price * 0.5, self.underlying_price * 1.5, 100)
+    #     call_prices = []
+    #     put_prices = []
+    #     orig_price = self.underlying_price
 
-        for price in prices:
-            self.underlying_price = price
-            call_prices.append(self.price_geometric_asian('call'))
-            put_prices.append(self.price_geometric_asian('put'))
+    #     for price in prices:
+    #         self.underlying_price = price
+    #         call_prices.append(self.price_geometric_asian('call'))
+    #         put_prices.append(self.price_geometric_asian('put'))
 
-        self.underlying_price = orig_price
+    #     self.underlying_price = orig_price
 
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=prices, y=call_prices, name="Call Option"))
-        fig.add_trace(go.Scatter(x=prices, y=put_prices, name="Put Option"))
+    #     fig = go.Figure()
+    #     fig.add_trace(go.Scatter(x=prices, y=call_prices, name="Call Option"))
+    #     fig.add_trace(go.Scatter(x=prices, y=put_prices, name="Put Option"))
 
-        fig.update_layout(
-            title="Sensibilidade do Preço da Opção ao Preço do Ativo",
-            xaxis_title="Preço do Ativo",
-            yaxis_title="Preço da Opção",
-            height=500
-        )
+    #     fig.update_layout(
+    #         title="Sensibilidade do Preço da Opção ao Preço do Ativo",
+    #         xaxis_title="Preço do Ativo",
+    #         yaxis_title="Preço da Opção",
+    #         height=500
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
-    def plot_monte_carlo_paths(self, n_paths=50):
-        """Plota caminhos da simulação Monte Carlo com estatísticas"""
-        dt = self.expiry / 252
-        paths = np.zeros((n_paths, 253))
-        paths[:, 0] = self.underlying_price
+    # def plot_monte_carlo_paths(self, n_paths=50):
+    #     """Plota caminhos da simulação Monte Carlo com estatísticas"""
+    #     dt = self.expiry / 252
+    #     paths = np.zeros((n_paths, 253))
+    #     paths[:, 0] = self.underlying_price
 
-        for i in range(1, 253):
-            z = np.random.standard_normal(n_paths)
-            paths[:, i] = paths[:, i-1] * np.exp(
-                (self.interest - 0.5 * self.volatility**2) * dt +
-                self.volatility * np.sqrt(dt) * z
-            )
+    #     for i in range(1, 253):
+    #         z = np.random.standard_normal(n_paths)
+    #         paths[:, i] = paths[:, i-1] * np.exp(
+    #             (self.interest - 0.5 * self.volatility**2) * dt +
+    #             self.volatility * np.sqrt(dt) * z
+    #         )
 
-        fig = go.Figure()
+    #     fig = go.Figure()
 
-        colors = sample_colorscale('Blues', [i / (n_paths - 1) for i in range(n_paths)])
+    #     colors = sample_colorscale('Blues', [i / (n_paths - 1) for i in range(n_paths)])
 
-        for i in range(n_paths):
-            fig.add_trace(go.Scatter(y=paths[i], mode='lines',
-                                   showlegend=False,
-                                   line=dict(width=1.2, color=colors[i])))
+    #     for i in range(n_paths):
+    #         fig.add_trace(go.Scatter(y=paths[i], mode='lines',
+    #                                showlegend=False,
+    #                                line=dict(width=1.2, color=colors[i])))
 
-        # Adicionar média
-        mean_path = np.mean(paths, axis=0)
-        fig.add_trace(go.Scatter(y=mean_path, mode='lines',
-                                name='Média',
-                                line=dict(color='red', width=2)))
+    #     # Adicionar média
+    #     mean_path = np.mean(paths, axis=0)
+    #     fig.add_trace(go.Scatter(y=mean_path, mode='lines',
+    #                             name='Média',
+    #                             line=dict(color='red', width=2)))
 
-        # Adicionar estatísticas
-        final_prices = paths[:,-1]
-        mean_price = np.mean(final_prices)
-        std_price = np.std(final_prices)
+    #     # Adicionar estatísticas
+    #     final_prices = paths[:,-1]
+    #     mean_price = np.mean(final_prices)
+    #     std_price = np.std(final_prices)
 
-        stats_text = f"""
-        Preço Médio Final: R${mean_price:.2f}
-        Desvio Padrão: R${std_price:.2f}
-        IC 95%: [R${mean_price - 1.96*std_price:.2f}, R${mean_price + 1.96*std_price:.2f}]
-        """
+    #     stats_text = f"""
+    #     Preço Médio Final: R${mean_price:.2f}
+    #     Desvio Padrão: R${std_price:.2f}
+    #     IC 95%: [R${mean_price - 1.96*std_price:.2f}, R${mean_price + 1.96*std_price:.2f}]
+    #     """
 
-        fig.add_annotation(
-            text=stats_text,
-            xref="paper", yref="paper",
-            x=1.0, y=1.0,
-            showarrow=False,
-            bordercolor="black",
-            borderwidth=0.5,
-            borderpad=4,
-            bgcolor="rgba(255,255,255,0.1)",
-            align="left"
-        )
+    #     fig.add_annotation(
+    #         text=stats_text,
+    #         xref="paper", yref="paper",
+    #         x=1.0, y=1.0,
+    #         showarrow=False,
+    #         bordercolor="black",
+    #         borderwidth=0.5,
+    #         borderpad=4,
+    #         bgcolor="rgba(255,255,255,0.1)",
+    #         align="left"
+    #     )
 
-        fig.update_layout(
-            title="Caminhos de Preço Monte Carlo",
-            xaxis_title="Passos Temporais",
-            yaxis_title="Preço do Ativo",
-            height=500,
-            #plot_bgcolor='rgba(0,0,0,0)',
-            #paper_bgcolor='rgba(255, 75, 75, 0.1)'
-        )
+    #     fig.update_layout(
+    #         title="Caminhos de Preço Monte Carlo",
+    #         xaxis_title="Passos Temporais",
+    #         yaxis_title="Preço do Ativo",
+    #         height=500,
+    #         #plot_bgcolor='rgba(0,0,0,0)',
+    #         #paper_bgcolor='rgba(255, 75, 75, 0.1)'
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
-    def plot_asian_paths(self, n_paths=50, geometric=False):
-        """Plota caminhos da simulação Monte Carlo com média para opções asiáticas"""
-        dt = self.expiry / 252
-        paths = np.zeros((n_paths, 253))
-        paths[:, 0] = self.underlying_price
+    # def plot_asian_paths(self, n_paths=50, geometric=False):
+    #     """Plota caminhos da simulação Monte Carlo com média para opções asiáticas"""
+    #     dt = self.expiry / 252
+    #     paths = np.zeros((n_paths, 253))
+    #     paths[:, 0] = self.underlying_price
 
-        for i in range(1, 253):
-            z = np.random.standard_normal(n_paths)
-            paths[:, i] = paths[:, i-1] * np.exp(
-                (self.interest - 0.5 * self.volatility**2) * dt +
-                self.volatility * np.sqrt(dt) * z
-            )
+    #     for i in range(1, 253):
+    #         z = np.random.standard_normal(n_paths)
+    #         paths[:, i] = paths[:, i-1] * np.exp(
+    #             (self.interest - 0.5 * self.volatility**2) * dt +
+    #             self.volatility * np.sqrt(dt) * z
+    #         )
 
-        fig = go.Figure()
+    #     fig = go.Figure()
 
-        colors = sample_colorscale('Blues', [i / (n_paths - 1) for i in range(n_paths)])
+    #     colors = sample_colorscale('Blues', [i / (n_paths - 1) for i in range(n_paths)])
 
-        # Plotar caminhos
-        for i in range(n_paths):
-            fig.add_trace(go.Scatter(y=paths[i], mode='lines',
-                               showlegend=False,
-                               line=dict(width=1.2, color=colors[i])))
+    #     # Plotar caminhos
+    #     for i in range(n_paths):
+    #         fig.add_trace(go.Scatter(y=paths[i], mode='lines',
+    #                            showlegend=False,
+    #                            line=dict(width=1.2, color=colors[i])))
 
-        # Adicionar média
-        if geometric:
-            mean_path = np.exp(np.mean(np.log(paths), axis=0))
-            title = "Caminhos de Preço Monte Carlo (com Média Geométrica)"
-        else:
-            mean_path = np.mean(paths, axis=0)
-            title = "Caminhos de Preço Monte Carlo (com Média Aritmética)"
+    #     # Adicionar média
+    #     if geometric:
+    #         mean_path = np.exp(np.mean(np.log(paths), axis=0))
+    #         title = "Caminhos de Preço Monte Carlo (com Média Geométrica)"
+    #     else:
+    #         mean_path = np.mean(paths, axis=0)
+    #         title = "Caminhos de Preço Monte Carlo (com Média Aritmética)"
 
-        fig.add_trace(go.Scatter(y=mean_path, mode='lines',
-                                name='Média',
-                                line=dict(color='red', width=2)))
+    #     fig.add_trace(go.Scatter(y=mean_path, mode='lines',
+    #                             name='Média',
+    #                             line=dict(color='red', width=2)))
 
-        # Adicionar estatísticas
-        final_means = mean_path[-1]
-        std_price = np.std(paths[:,-1])
+    #     # Adicionar estatísticas
+    #     final_means = mean_path[-1]
+    #     std_price = np.std(paths[:,-1])
 
-        stats_text = f"""
-        {'Média Geométrica' if geometric else 'Média Aritmética'} Final: R${final_means:.2f}
-        Desvio Padrão: R${std_price:.2f}
-        IC 95%: [R${final_means - 1.96*std_price:.2f}, R${final_means + 1.96*std_price:.2f}]
-        """
+    #     stats_text = f"""
+    #     {'Média Geométrica' if geometric else 'Média Aritmética'} Final: R${final_means:.2f}
+    #     Desvio Padrão: R${std_price:.2f}
+    #     IC 95%: [R${final_means - 1.96*std_price:.2f}, R${final_means + 1.96*std_price:.2f}]
+    #     """
 
-        fig.add_annotation(
-            text=stats_text,
-            xref="paper", yref="paper",
-            x=1.0, y=1.0,
-            showarrow=False,
-            bordercolor="black",
-            borderwidth=0.5,
-            borderpad=4,
-            bgcolor="rgba(255,255,255,0.1)",
-            align="left"
-        )
+    #     fig.add_annotation(
+    #         text=stats_text,
+    #         xref="paper", yref="paper",
+    #         x=1.0, y=1.0,
+    #         showarrow=False,
+    #         bordercolor="black",
+    #         borderwidth=0.5,
+    #         borderpad=4,
+    #         bgcolor="rgba(255,255,255,0.1)",
+    #         align="left"
+    #     )
 
-        fig.update_layout(
-            title=title,
-            xaxis_title="Passos Temporais",
-            yaxis_title="Preço do Ativo",
-            height=500
-        )
+    #     fig.update_layout(
+    #         title=title,
+    #         xaxis_title="Passos Temporais",
+    #         yaxis_title="Preço do Ativo",
+    #         height=500
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
-    def plot_implied_vol_convergence(self, market_price, option_style='call'):
-        """Plota convergência da volatilidade implícita"""
-        vols = np.linspace(0.01, 1, 100)
-        prices = []
-        orig_vol = self.volatility
+    # def plot_implied_vol_convergence(self, market_price, option_style='call'):
+    #     """Plota convergência da volatilidade implícita"""
+    #     vols = np.linspace(0.01, 1, 100)
+    #     prices = []
+    #     orig_vol = self.volatility
 
-        for vol in vols:
-            self.volatility = vol
-            prices.append(self.price_european_bs(option_style))
+    #     for vol in vols:
+    #         self.volatility = vol
+    #         prices.append(self.price_european_bs(option_style))
 
-        self.volatility = orig_vol
+    #     self.volatility = orig_vol
 
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=vols*100, y=prices,
-                                name="Preço BS"))
-        fig.add_hline(y=market_price, name="Preço de Mercado",
-                     line=dict(color='red', dash='dash'))
+    #     fig = go.Figure()
+    #     fig.add_trace(go.Scatter(x=vols*100, y=prices,
+    #                             name="Preço BS"))
+    #     fig.add_hline(y=market_price, name="Preço de Mercado",
+    #                  line=dict(color='red', dash='dash'))
 
-        fig.update_layout(
-            title="Convergência da Volatilidade Implícita",
-            xaxis_title="Volatilidade (%)",
-            yaxis_title="Preço da Opção",
-            height=500
-        )
+    #     fig.update_layout(
+    #         title="Convergência da Volatilidade Implícita",
+    #         xaxis_title="Volatilidade (%)",
+    #         yaxis_title="Preço da Opção",
+    #         height=500
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
-    def plot_tree_diagram(self, num_steps=5):
-        """Plota diagrama simplificado da árvore binomial"""
-        dt = self.expiry / num_steps
-        u = np.exp(self.volatility * np.sqrt(dt))
-        d = 1 / u
+    # def plot_tree_diagram(self, num_steps=5):
+    #     """Plota diagrama simplificado da árvore binomial"""
+    #     dt = self.expiry / num_steps
+    #     u = np.exp(self.volatility * np.sqrt(dt))
+    #     d = 1 / u
 
-        # Criar coordenadas para os nós
-        x_coords = []
-        y_coords = []
-        prices = []
+    #     # Criar coordenadas para os nós
+    #     x_coords = []
+    #     y_coords = []
+    #     prices = []
 
-        for i in range(num_steps + 1):
-            for j in range(i + 1):
-                x_coords.append(i)
-                y_coords.append(j - i/2)
-                prices.append(self.underlying_price * (u**(i-j)) * (d**j))
+    #     for i in range(num_steps + 1):
+    #         for j in range(i + 1):
+    #             x_coords.append(i)
+    #             y_coords.append(j - i/2)
+    #             prices.append(self.underlying_price * (u**(i-j)) * (d**j))
 
-        fig = go.Figure()
+    #     fig = go.Figure()
 
-        # Adicionar nós
-        fig.add_trace(go.Scatter(
-            x=x_coords,
-            y=y_coords,
-            mode='markers+text',
-            text=[f'R${p:.1f}' for p in prices],
-            textposition='top center',
-            marker=dict(size=10)
-        ))
+    #     # Adicionar nós
+    #     fig.add_trace(go.Scatter(
+    #         x=x_coords,
+    #         y=y_coords,
+    #         mode='markers+text',
+    #         text=[f'R${p:.1f}' for p in prices],
+    #         textposition='top center',
+    #         marker=dict(size=10)
+    #     ))
 
-        fig.update_layout(
-            title="Diagrama da Árvore Binomial (Primeiros 5 Passos)",
-            xaxis_title="Passos",
-            yaxis_title="Níveis",
-            height=500,
-            showlegend=False
-        )
+    #     fig.update_layout(
+    #         title="Diagrama da Árvore Binomial (Primeiros 5 Passos)",
+    #         xaxis_title="Passos",
+    #         yaxis_title="Níveis",
+    #         height=500,
+    #         showlegend=False
+    #     )
 
-        st.plotly_chart(fig)
+    #     st.plotly_chart(fig)
 
     def run(self):
         if self.calculator_type == "Européia (BSM)":
